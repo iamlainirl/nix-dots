@@ -166,7 +166,7 @@
      wl-clipboard
      grim
      slurp
-     swww
+     awww
      hyprpaper
      hypridle
      hyprsunset
@@ -179,7 +179,6 @@
      nftables
      tailscale
      sing-box
-     hiddify-app
 
      ipset
      iptables
@@ -234,6 +233,8 @@
     noto-fonts-color-emoji
     jetbrains-mono
     fira-code
+    nerd-fonts.jetbrains-mono
+    nerd-fonts.symbols-only
   ];
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.

@@ -2,10 +2,9 @@
     description = "reiru NixOS config";
 
     inputs = {
-        nixpkgs.url = "git+https://github.com/NixOS/nixpkgs?ref=nixos-unstable";
-
+        nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
         home-manager = {
-            url = "git+https://github.com/nix-community/home-manager?ref=master";
+            url = "github:nix-community/home-manager";
             inputs.nixpkgs.follows = "nixpkgs";
           };
       };
@@ -25,6 +24,7 @@
                   {
                       home-manager.useGlobalPkgs = true;
                       home-manager.useUserPackages = true;
+                       home-manager.backupFileExtension = "before-home-manager";
                       home-manager.users.${username} = import ./home/${username}/home.nix;
                     }
                 ];

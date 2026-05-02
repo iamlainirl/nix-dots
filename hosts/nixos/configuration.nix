@@ -80,7 +80,7 @@
     enable32Bit = true;
   };
   hardware.opentabletdriver.enable = true;
-  hardware.uinput,enable = true;
+  hardware.uinput.enable = true;
   boot.kernelModules = [ "uinput" ];
   programs.steam.enable = true;
   hardware.steam-hardware.enable = true;
@@ -179,6 +179,7 @@
      nftables
      tailscale
      sing-box
+     hiddify-app
 
      ipset
      iptables

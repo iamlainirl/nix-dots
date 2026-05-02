@@ -79,7 +79,9 @@
     enable = true;
     enable32Bit = true;
   };
-
+  hardware.opentabletdriver.enable = true;
+  hardware.uinput,enable = true;
+  boot.kernelModules = [ "uinput" ];
   programs.steam.enable = true;
   hardware.steam-hardware.enable = true;
   programs.gamemode.enable = true;

@@ -2,10 +2,10 @@
     description = "reiru NixOS config";
 
     inputs = {
-        nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+        nixpkgs.url = "git+https://github.com/NixOS/nixpkgs?ref=nixos-unstable";
 
         home-manager = {
-            url = "github:nix-community/home-manager";
+            url = "git+https://github.com/nix-community/home-manager?ref=master";
             inputs.nixpkgs.follows = "nixpkgs";
           };
       };

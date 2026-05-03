@@ -183,6 +183,9 @@
      ipset
      iptables
 
+     bibata-cursors
+     adwaita-icon-theme
+
      # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
   #  wget
   ];
@@ -236,6 +239,12 @@
     nerd-fonts.jetbrains-mono
     nerd-fonts.symbols-only
   ];
+
+  environment.sessionVariables = {
+    XCURSOR_THEME = "Bibata-Modern-Ice";
+    XCURSOR_SIZE = "24";
+    HYPRCURSOR_SIZE = "24";
+  };
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   # programs.mtr.enable = true;

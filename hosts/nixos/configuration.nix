@@ -9,6 +9,7 @@
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+  boot.kernelParams = [ "amdgpu.dc=1" ];
 
   networking.hostName = "nixos"; # Define your hostname.
 #  networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
@@ -25,9 +26,14 @@
   time.timeZone = "Europe/Moscow";
   
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
-  # Select internationalisation properties.
-  i18n.defaultLocale = "en_US.UTF-8";
+  nix.settings.auto-optimise-store = true;
+  nix.gc = {
+    automatic = true;
+    dates = "weekly";
+    options = "--delete-older-than 14d";
+  };
 
+  i18n.defaultLocale = "en_US.UTF-8";
   i18n.extraLocaleSettings = {
     LC_ADDRESS = "en_US.UTF-8";
     LC_IDENTIFICATION = "en_US.UTF-8";
@@ -40,22 +46,19 @@
     LC_TIME = "en_US.UTF-8";
   };
 
-  # Configure keymap in X11
+  services.xserver.enable = false;
   services.xserver.xkb = {
     layout = "us";
     variant = "";
   };
 
-  # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.reiru = {
     isNormalUser = true;
     description = "reiru";
-    extraGroups = [ "networkmanager" "wheel" "video" "audio" ];
+    extraGroups = [ "networkmanager" "wheel" "video" "audio" "docker" ];
     shell = pkgs.zsh;
-    packages = with pkgs; [];
   };
   programs.zsh.enable = true;
-  services.xserver.enable = false;
 
   programs.hyprland = {
     enable = true;
@@ -64,6 +67,7 @@
   };
 
   services.getty.autologinUser = "reiru";
+
   security.rtkit.enable = true;
   services.pipewire = {
     enable = true;
@@ -72,19 +76,24 @@
     alsa.support32Bit = true;
     wireplumber.enable = true;
   };
+
   hardware.bluetooth.enable = true;
   services.blueman.enable = true;
 
   hardware.graphics = {
     enable = true;
     enable32Bit = true;
+    extraPackages = with pkgs; [ rocmPackages.clr.icd ];
   };
+
   hardware.opentabletdriver.enable = true;
   hardware.uinput.enable = true;
   boot.kernelModules = [ "uinput" ];
+
   programs.steam.enable = true;
   hardware.steam-hardware.enable = true;
   programs.gamemode.enable = true;
+
   programs.thunar.enable = true;
   programs.amnezia-vpn.enable = true;
   programs.xfconf.enable = true;
@@ -93,143 +102,55 @@
   programs.thunar.plugins = with pkgs.xfce; [
     thunar-volman
   ];
+  programs.appimage = {
+      enable = true;
+      binfmt = true;
+  };
   
-  # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
- 
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
   environment.systemPackages = with pkgs; [
-     chromium
-     firefox
+    vim
+    git
+    curl
+    wget
+    tmux
 
-     kitty
-     git
-     vim
-     neovim
-     fastfetch
-     btop
-     htop
-     tree
-     unzip
-     p7zip
-     jq
-     ripgrep
-     fd
-     fzf
-     bat
-     eza
-     yazi
-     tmux
+    clang
+    clang-tools
+    gdb
+    ninja
+    gopls
+    golangci-lint
+    valgrind
+    pnpm
+    rustup
+    pkg-config
 
-     wget
-     curl
-     tree-sitter
+    socat
+    nftables
+    ipset
+    iptables
+    sing-box
 
-     gcc
-     clang
-     clang-tools
-     gdb
-     cmake
-     gnumake
-     ninja
-     go
-     gopls
-     golangci-lint
-     valgrind
-     pnpm
-     nixd
+    bibata-cursors
+    adwaita-icon-theme
 
-     obsidian
-     krita
+    mangohud
+    goverlay
+    gamescope
 
-     mpv
-     vlc
-     cava
-     mpd
-     ncmpcpp
+    mpv
+    vlc
+    cava
+    mpd
+    ncmpcpp
 
-     file
-     telegram-desktop
-     pkg-config
-     python3
-     nodejs
-     rustup
-     mangohud
-     goverlay
-     gamescope
-     vulkan-tools
-     mesa-demos
-     waybar
-     mako
-     rofi
-     wl-clipboard
-     grim
-     slurp
-     awww
-     hyprpaper
-     hypridle
-     hyprsunset
-     brightnessctl
-     playerctl
-     pamixer
-     networkmanagerapplet
-     pavucontrol
+    telegram-desktop
 
-     nftables
-     tailscale
-     sing-box
-
-     ipset
-     iptables
-
-     bibata-cursors
-     adwaita-icon-theme
-
-     # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
+    appimage-run     # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
   #  wget
   ];
 
-  systemd.services.zapret = {
-    description = "zapret DPI bypass";
-    wantedBy = [ "multi-user.target" ];
-    after = [
-      "network-online.target"
-      "firewall.service"
-      "nftables.service"
-    ];
-    wants = [ "network-online.target" ];
-
-    path = with pkgs; [
-      bash
-      coreutils
-      gnugrep
-      gnused
-      gawk
-      findutils
-      iproute2
-      iptables
-      ipset
-      nftables
-      curl
-      procps
-    ];
-
-    serviceConfig = {
-      Type = "forking";
-      Restart = "no";
-      TimeoutSec = "30sec";
-      IgnoreSIGPIPE = false;
-      KillMode = "none";
-      GuessMainPID = false;
-      RemainAfterExit = false;
-
-      ExecStart = "/opt/zapret/init.d/sysv/zapret start";
-      ExecStop = "/opt/zapret/init.d/sysv/zapret stop";
-    };
-  };
-
-  
   fonts.packages = with pkgs; [
     noto-fonts
     noto-fonts-cjk-sans
@@ -241,7 +162,7 @@
   ];
 
   environment.sessionVariables = {
-    XCURSOR_THEME = "Bibata-Modern-Ice";
+    XCURSOR_THEME = "Adwaita";
     XCURSOR_SIZE = "24";
     HYPRCURSOR_SIZE = "24";
   };
@@ -253,12 +174,15 @@
   #   enableSSHSupport = true;
   # };
 
-
+  virtualisation.docker.enable = true;
+  services.tailscale.enable = true;
   services.openssh.enable = true;
   xdg.portal.enable = true;
   xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-hyprland ];
 
   programs.nix-ld.enable = true;
+  programs.mtr.enable = true;
+
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];

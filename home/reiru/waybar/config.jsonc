@@ -1,0 +1,142 @@
+{
+  "layer": "top",
+  "position": "top",
+  "height": 28,
+  "spacing": 5,
+  "margin-top": 5,
+  "margin-left": 10,
+  "margin-right": 10,
+
+  "modules-left": [
+    "hyprland/workspaces",
+    "hyprland/window"
+  ],
+
+  "modules-center": [
+    "clock"
+  ],
+
+  "modules-right": [
+    "hyprland/language",
+    "custom/vpn",
+    "custom/tls",
+    "custom/docker",
+    "network",
+    "pulseaudio",
+    "group/hardware",
+    "custom/power"
+  ],
+
+  "hyprland/workspaces": {
+    "on-scroll-up": "hyprctl dispatch workspace r-1",
+    "on-scroll-down": "hyprctl dispatch workspace r+1",
+    "on-click": "activate",
+    "active-only": false,
+    "all-outputs": true,
+    "format": "{name}",
+    "persistent-workspaces": {
+      "*": 5
+    }
+  },
+
+  "hyprland/window": {
+    "max-length": 42,
+    "separate-outputs": true,
+    "rewrite": {
+      "(.*) - Chromium": "$1",
+      "(.*) - Google Chrome": "$1",
+      "(.*) - Firefox": "$1",
+      "(.*) — Mozilla Firefox": "$1",
+      "(.*) - kitty": "$1"
+    }
+  },
+
+  "hyprland/language": {
+    "format": "{short}",
+    "on-click": "hyprctl switchxkblayout all next"
+  },
+
+  "custom/vpn": {
+    "exec": "bash ~/.config/waybar/scripts/vpn.sh",
+    "return-type": "json",
+    "interval": 5,
+    "tooltip": true
+  },
+
+  "custom/tls": {
+    "exec": "bash ~/.config/waybar/scripts/tls.sh",
+    "return-type": "json",
+    "interval": 60,
+    "tooltip": true
+  },
+
+  "custom/docker": {
+    "exec": "bash ~/.config/waybar/scripts/docker.sh",
+    "return-type": "json",
+    "interval": 10,
+    "tooltip": true,
+    "on-click": "kitty -e lazydocker"
+  },
+
+  "network": {
+    "format-wifi": "NET {signalStrength}%",
+    "format-ethernet": "LAN {ifname}",
+    "format-disconnected": "NET down",
+    "tooltip-format-wifi": "{ifname} @ {essid}\nIP: {ipaddr}\nStrength: {signalStrength}%\nFreq: {frequency}MHz\nUp: {bandwidthUpBits}\nDown: {bandwidthDownBits}",
+    "tooltip-format-ethernet": "{ifname}\nIP: {ipaddr}\nUp: {bandwidthUpBits}\nDown: {bandwidthDownBits}",
+    "tooltip-format-disconnected": "Disconnected"
+  },
+
+  "pulseaudio": {
+    "format": "VOL {volume}%",
+    "format-muted": "VOL off",
+    "on-click": "pavucontrol",
+    "scroll-step": 5
+  },
+
+  "custom/system": {
+    "format": "SYS",
+    "tooltip-format": "hardware drawer"
+  },
+
+  "cpu": {
+    "format": "C {usage}%"
+  },
+
+  "memory": {
+    "format": "M {percentage}%"
+  },
+
+  "disk": {
+    "interval": 30,
+    "format": "D {percentage_used}%",
+    "path": "/"
+  },
+
+  "group/hardware": {
+    "orientation": "inherit",
+    "drawer": {
+      "transition-duration": 180,
+      "children-class": "hardware-child",
+      "transition-left-to-right": false
+    },
+    "modules": [
+      "custom/system",
+      "disk",
+      "cpu",
+      "memory"
+    ]
+  },
+
+  "clock": {
+    "format": "{:%H:%M}",
+    "tooltip-format": "{:%A, %d %B %Y}",
+    "interval": 1
+  },
+
+  "custom/power": {
+    "format": "⏻",
+    "tooltip-format": "power menu",
+    "on-click": "wlogout"
+  }
+}

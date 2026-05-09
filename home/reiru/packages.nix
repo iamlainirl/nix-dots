@@ -3,42 +3,63 @@
 {
     home.packages = with pkgs; [
       btop
-      htop 
       ripgrep
       fd
-      bat 
-      eza 
-      fzf 
-      jq 
-      yq 
-      tree 
-      unzip 
-      wget 
-      curl 
+      bat
+      eza
+      fzf
+      jq
+      yq
+      tree
+      unzip
+      neovim
 
-      dig 
-      nmap
-      mtr 
-      tcpdump 
-      iperf3 
-      whois 
+      pciutils
+      usbutils
+      lshw
+      dmidecode
+      ethtool
 
-      git 
-      gcc 
-      gnumake 
-      cmake 
-      go 
-      python3 
-      nodejs 
+      iw
+      wirelesstools
+      traceroute
+      netcat-gnu
+      openssl
+      wireguard-tools
+      rsync
 
-      lazydocker 
+      nil
+      nh 
+      nix-output-monitor
+      nixfmt-rfc-style
 
-      yazi 
+      gcc
+      gnumake
+      cmake
+      go
+      python3
+      nodejs
+
+      lazydocker
+      docker-compose
+
+      yazi
+      fastfetch
 
       firefox
       chromium
-      thunar
       krita
       obsidian
+
+      grim
+      slurp
+      wl-clipboard
+      cliphist
+      swappy
+      wlogout
+      pavucontrol
+      playerctl
+
+
     ];
   }
